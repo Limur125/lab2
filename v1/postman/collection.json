@@ -1,15 +1,16 @@
 {
 	"info": {
-		"_postman_id": "6a65c85e-f601-4a7e-9d78-ef46b38321f1",
-		"name": "[rsoi][lab2] Flight Service",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "959e6200-3ca6-4e55-8806-c79c6c311ea7",
+		"name": "[rsoi][lab3] Flight Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "976707"
 	},
 	"item": [
 		{
-			"name": "Gateway API",
+			"name": "success",
 			"item": [
 				{
-					"name": "Получить список рейсов",
+					"name": "[success] Получить список рейсов",
 					"event": [
 						{
 							"listen": "test",
@@ -19,7 +20,7 @@
 									"    pm.response.to.have.status(200)",
 									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
 									"",
-									"    const flightNumber = pm.collectionVariables.get(\"flightNumber\")",
+									"    const flightNumber = pm.environment.get(\"flightNumber\")",
 									"    const response = pm.response.json();",
 									"",
 									"    const pageSize = Number(pm.request.url.query.get(\"size\"))",
@@ -28,12 +29,12 @@
 									"    pm.expect(response.pageSize).to.be.lte(pageSize)",
 									"    pm.expect(response.totalElements).to.be.not.undefined",
 									"",
-									"    const flight = _.find(response.items, { \"flightNumber\": flightNumber })",
+									"    const flight = _.find(response.items, { \"flightnumber\": flightNumber })",
 									"    pm.expect(flight).to.be.not.undefined",
-									"    pm.expect(flight.flightNumber).to.eq(flightNumber)",
-									"    pm.expect(flight.fromAirport).to.eq(\"Санкт-Петербург Пулково\")",
-									"    pm.expect(flight.toAirport).to.eq(\"Москва Шереметьево\")",
-									"    pm.expect(flight.date).to.not.empty",
+									"    pm.expect(flight.flightnumber).to.eq(flightNumber)",
+									"    pm.expect(flight.fromairport.name).to.eq(\"Пулково\")",
+									"    pm.expect(flight.toairport.name).to.eq(\"Шереметьево\")",
+									"    pm.expect(flight.datetime).to.not.empty",
 									"    pm.expect(flight.price).to.eq(1500)",
 									"})"
 								],
@@ -109,7 +110,7 @@
 					]
 				},
 				{
-					"name": "Получить информацию о состоянии бонусного счета",
+					"name": "[success] Получить информацию о состоянии бонусного счета",
 					"event": [
 						{
 							"listen": "test",
@@ -123,7 +124,7 @@
 									"",
 									"    pm.expect(response.balance).to.be.not.undefined",
 									"    pm.expect(response.status).to.be.not.undefined",
-									"    pm.collectionVariables.set(\"balance\", response.balance)",
+									"    pm.environment.set(\"balance\", response.balance)",
 									"})"
 								],
 								"type": "text/javascript"
@@ -136,18 +137,18 @@
 							{
 								"description": "Имя пользователя",
 								"key": "X-User-Name",
-								"value": "{{username}}"
+								"value": "X-User-Name"
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/privilege",
+							"raw": "{{baseUrl}}/api/v1/privileges",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"privilege"
+								"privileges"
 							]
 						}
 					},
@@ -160,18 +161,18 @@
 									{
 										"description": "Имя пользователя",
 										"key": "X-User-Name",
-										"value": "{{username}}"
+										"value": "X-User-Name"
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/api/v1/privilege",
+									"raw": "{{baseUrl}}/api/v1/privileges",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"privilege"
+										"privileges"
 									]
 								}
 							},
@@ -190,7 +191,7 @@
 					]
 				},
 				{
-					"name": "Покупка билета",
+					"name": "[success] Покупка билета",
 					"event": [
 						{
 							"listen": "test",
@@ -200,14 +201,12 @@
 									"    pm.response.to.have.status(200)",
 									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
 									"",
-									"    const flightNumber = pm.collectionVariables.get(\"flightNumber\")",
+									"    const flightNumber = pm.environment.get(\"flightNumber\")",
 									"    const response = pm.response.json();",
 									"",
 									"    pm.expect(response).to.be.not.undefined",
 									"    pm.expect(response.ticketUid).to.be.not.empty",
 									"    pm.expect(response.flightNumber).to.eq(flightNumber)",
-									"    pm.expect(response.fromAirport).to.eq(\"Санкт-Петербург Пулково\")",
-									"    pm.expect(response.toAirport).to.eq(\"Москва Шереметьево\")",
 									"    pm.expect(response.date).to.not.empty",
 									"    pm.expect(response.price).to.eq(1500)",
 									"    pm.expect(response.paidByMoney).to.eq(1500)",
@@ -216,7 +215,7 @@
 									"    pm.expect(response.privilege.balance).to.gte(150)",
 									"    pm.expect(response.privilege.status).to.be.not.empty",
 									"    ",
-									"    pm.collectionVariables.set(\"ticketUid\", response.ticketUid)",
+									"    pm.environment.set(\"ticketUid\", response.ticketUid)",
 									"})"
 								],
 								"type": "text/javascript"
@@ -229,7 +228,7 @@
 							{
 								"description": "Имя пользователя",
 								"key": "X-User-Name",
-								"value": "{{username}}"
+								"value": "X-User-Name"
 							},
 							{
 								"key": "Content-Type",
@@ -238,7 +237,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"flightNumber\": \"{{flightNumber}}\",\n    \"price\": 1500,\n    \"paidFromBalance\": false\n}"
+							"raw": "{\n    \"flightnumber\": \"{{flightNumber}}\",\n    \"price\": 1500,\n    \"paidfrombalance\": false\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/tickets",
@@ -261,7 +260,7 @@
 									{
 										"description": "Имя пользователя",
 										"key": "X-User-Name",
-										"value": "{{username}}"
+										"value": "X-User-Name"
 									},
 									{
 										"key": "Content-Type",
@@ -272,7 +271,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"flightNumber\": \"AFL031\",\n    \"price\": 1500,\n    \"paidFromBalance\": false\n}",
+									"raw": "{\n    \"flightnumber\": \"AFL031\",\n    \"price\": 1500,\n    \"paidfrombalance\": false\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -306,7 +305,7 @@
 					]
 				},
 				{
-					"name": "Информация по конкретному билету",
+					"name": "[success] Информация по конкретному билету",
 					"event": [
 						{
 							"listen": "test",
@@ -316,16 +315,13 @@
 									"    pm.response.to.have.status(200)",
 									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
 									"",
-									"    const flightNumber = pm.collectionVariables.get(\"flightNumber\")",
-									"    const ticketUid = pm.collectionVariables.get(\"ticketUid\")",
+									"    const flightNumber = pm.environment.get(\"flightNumber\")",
+									"    const ticketUid = pm.environment.get(\"ticketUid\")",
 									"    ",
 									"    const response = pm.response.json();",
 									"    pm.expect(response).to.be.not.undefined",
-									"    pm.expect(response.ticketUid).to.be.eq(ticketUid)",
-									"    pm.expect(response.flightNumber).to.eq(flightNumber)",
-									"    pm.expect(response.fromAirport).to.eq(\"Санкт-Петербург Пулково\")",
-									"    pm.expect(response.toAirport).to.eq(\"Москва Шереметьево\")",
-									"    pm.expect(response.date).to.not.empty",
+									"    pm.expect(response.ticketuid).to.be.eq(ticketUid)",
+									"    pm.expect(response.flightnumber).to.eq(flightNumber)",
 									"    pm.expect(response.price).to.eq(1500)",
 									"    pm.expect(response.status).to.eq(\"PAID\")",
 									"})"
@@ -340,7 +336,7 @@
 							{
 								"description": "Имя пользователя",
 								"key": "X-User-Name",
-								"value": "{{username}}"
+								"value": "X-User-Name"
 							}
 						],
 						"url": {
@@ -372,7 +368,7 @@
 									{
 										"description": "Имя пользователя",
 										"key": "X-User-Name",
-										"value": "{{username}}"
+										"value": "X-User-Name"
 									}
 								],
 								"url": {
@@ -404,12 +400,12 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n \"ticketUid\": \"049161bb-badd-4fa8-9d90-87c9a82b0668\",\n \"flightNumber\": \"AFL031\",\n \"fromAirport\": \"Санкт-Петербург Пулково\",\n \"toAirport\": \"Москва Шереметьево\",\n \"date\": \"2021-10-08 20:00\",\n \"price\": 1500,\n \"status\": \"PAID\"\n}"
+							"body": "{\n    \"ticketuid\": \"049161bb-badd-4fa8-9d90-87c9a82b0668\",\n    \"flightNumber\": \"AFL031\",\n    \"fromAirport\": \"Санкт-Петербург Пулково\",\n    \"toAirport\": \"Москва Шереметьево\",\n    \"date\": \"2021-10-08 20:00\",\n    \"price\": 1500,\n    \"status\": \"PAID\"\n}"
 						}
 					]
 				},
 				{
-					"name": "Информация по всем билетам пользователя",
+					"name": "[success] Информация по всем билетам пользователя",
 					"event": [
 						{
 							"listen": "test",
@@ -419,18 +415,17 @@
 									"    pm.response.to.have.status(200)",
 									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
 									"",
-									"    const flightNumber = pm.collectionVariables.get(\"flightNumber\")",
-									"    const ticketUid = pm.collectionVariables.get(\"ticketUid\")",
+									"    const flightNumber = pm.environment.get(\"flightNumber\")",
+									"    const ticketUid = pm.environment.get(\"ticketUid\")",
 									"    ",
 									"    const response = pm.response.json();",
-									"    pm.expect(response).to.be.an(\"array\")",
 									"",
-									"    const ticket = _.find(response, { \"ticketUid\": ticketUid })",
+									"    const ticket = _.find(response.items, { \"ticketuid\": ticketUid })",
 									"    pm.expect(ticket).to.be.not.undefined",
-									"    pm.expect(ticket.ticketUid).to.be.eq(ticketUid)",
-									"    pm.expect(ticket.flightNumber).to.eq(flightNumber)",
-									"    pm.expect(ticket.fromAirport).to.eq(\"Санкт-Петербург Пулково\")",
-									"    pm.expect(ticket.toAirport).to.eq(\"Москва Шереметьево\")",
+									"    pm.expect(ticket.ticketuid).to.be.eq(ticketUid)",
+									"    pm.expect(ticket.flightnumber).to.eq(flightNumber)",
+									"    pm.expect(ticket.fromAirport).to.eq(\"Пулково\")",
+									"    pm.expect(ticket.toAirport).to.eq(\"Шереметьево\")",
 									"    pm.expect(ticket.date).to.not.empty",
 									"    pm.expect(ticket.price).to.eq(1500)",
 									"    pm.expect(ticket.status).to.eq(\"PAID\")",
@@ -446,11 +441,11 @@
 							{
 								"description": "Имя пользователя",
 								"key": "X-User-Name",
-								"value": "{{username}}"
+								"value": "X-User-Name"
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/tickets",
+							"raw": "{{baseUrl}}/api/v1/tickets?page=1&size=10",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -458,6 +453,16 @@
 								"api",
 								"v1",
 								"tickets"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -470,11 +475,11 @@
 									{
 										"description": "Имя пользователя",
 										"key": "X-User-Name",
-										"value": "{{username}}"
+										"value": "X-User-Name"
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/api/v1/tickets",
+									"raw": "{{baseUrl}}/api/v1/tickets?page=1&size=10",
 									"host": [
 										"{{baseUrl}}"
 									],
@@ -482,6 +487,16 @@
 										"api",
 										"v1",
 										"tickets"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
 									]
 								}
 							},
@@ -500,7 +515,7 @@
 					]
 				},
 				{
-					"name": "Информация о пользователе",
+					"name": "[success] Информация о пользователе",
 					"event": [
 						{
 							"listen": "test",
@@ -510,18 +525,18 @@
 									"    pm.response.to.have.status(200)",
 									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
 									"",
-									"    const flightNumber = pm.collectionVariables.get(\"flightNumber\")",
-									"    const ticketUid = pm.collectionVariables.get(\"ticketUid\")",
-									"    const balance = pm.collectionVariables.get(\"balance\")",
+									"    const flightNumber = pm.environment.get(\"flightNumber\")",
+									"    const ticketUid = pm.environment.get(\"ticketUid\")",
+									"    const balance = pm.environment.get(\"balance\")",
 									"",
 									"    const response = pm.response.json();",
-									"    const ticket = _.find(response.tickets, { \"ticketUid\": ticketUid })",
+									"    const ticket = _.find(response.tickets, { \"ticketuid\": ticketUid })",
 									"",
 									"    pm.expect(ticket).to.be.not.undefined",
-									"    pm.expect(ticket.ticketUid).to.be.eq(ticketUid)",
-									"    pm.expect(ticket.flightNumber).to.be.eq(flightNumber)",
-									"    pm.expect(ticket.fromAirport).to.eq(\"Санкт-Петербург Пулково\")",
-									"    pm.expect(ticket.toAirport).to.eq(\"Москва Шереметьево\")",
+									"    pm.expect(ticket.ticketuid).to.be.eq(ticketUid)",
+									"    pm.expect(ticket.flightnumber).to.be.eq(flightNumber)",
+									"    pm.expect(ticket.fromAirport).to.eq(\"Пулково\")",
+									"    pm.expect(ticket.toAirport).to.eq(\"Шереметьево\")",
 									"    pm.expect(ticket.date).to.not.empty",
 									"    pm.expect(ticket.price).to.be.eq(1500)",
 									"    pm.expect(ticket.status).to.be.eq(\"PAID\")",
@@ -541,7 +556,7 @@
 							{
 								"description": "Имя пользователя",
 								"key": "X-User-Name",
-								"value": "{{username}}"
+								"value": "X-User-Name"
 							}
 						],
 						"url": {
@@ -565,7 +580,7 @@
 									{
 										"description": "Имя пользователя",
 										"key": "X-User-Name",
-										"value": "{{username}}"
+										"value": "X-User-Name"
 									}
 								],
 								"url": {
@@ -595,7 +610,7 @@
 					]
 				},
 				{
-					"name": "Получить информацию о состоянии бонусного счета после покупки билета",
+					"name": "[success] Получить информацию о состоянии бонусного счета после покупки билета",
 					"event": [
 						{
 							"listen": "test",
@@ -605,8 +620,8 @@
 									"    pm.response.to.have.status(200)",
 									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contains(\"application/json\");",
 									"",
-									"    const ticketUid = pm.collectionVariables.get(\"ticketUid\")",
-									"    const balance = pm.collectionVariables.get(\"balance\")",
+									"    const ticketUid = pm.environment.get(\"ticketUid\")",
+									"    const balance = pm.environment.get(\"balance\")",
 									"",
 									"    const response = pm.response.json();",
 									"    const ticket = _.find(response.history, { \"ticketUid\": ticketUid })",
@@ -626,18 +641,18 @@
 							{
 								"description": "Имя пользователя",
 								"key": "X-User-Name",
-								"value": "{{username}}"
+								"value": "X-User-Name"
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/privilege",
+							"raw": "{{baseUrl}}/api/v1/privileges",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"v1",
-								"privilege"
+								"privileges"
 							]
 						}
 					},
@@ -650,18 +665,18 @@
 									{
 										"description": "Имя пользователя",
 										"key": "X-User-Name",
-										"value": "{{username}}"
+										"value": "X-User-Name"
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/api/v1/privilege",
+									"raw": "{{baseUrl}}/api/v1/privileges",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
 										"v1",
-										"privilege"
+										"privileges"
 									]
 								}
 							},
@@ -680,7 +695,7 @@
 					]
 				},
 				{
-					"name": "Возврат билета",
+					"name": "[success] Возврат билета",
 					"event": [
 						{
 							"listen": "test",
@@ -700,7 +715,7 @@
 							{
 								"description": "Имя пользователя",
 								"key": "X-User-Name",
-								"value": "{{username}}"
+								"value": "X-User-Name"
 							}
 						],
 						"url": {
@@ -732,7 +747,7 @@
 									{
 										"description": "Имя пользователя",
 										"key": "X-User-Name",
-										"value": "{{username}}"
+										"value": "X-User-Name"
 									}
 								],
 								"url": {
@@ -767,27 +782,6 @@
 						}
 					]
 				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"pm.collectionVariables.set(\"flightNumber\", \"AFL031\")",
-							"pm.collectionVariables.set(\"username\", \"Test Max\")"
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
 			]
 		}
 	],
@@ -798,7 +792,7 @@
 		},
 		{
 			"key": "flightNumber",
-			"value": ""
+			"value": "AFL031"
 		},
 		{
 			"key": "ticketUid",
