@@ -52,3 +52,4 @@ jobs:
         if: always()
         continue-on-error: true
         run: docker compose down -v
+        
