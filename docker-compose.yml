@@ -13,8 +13,86 @@ services:
       - ./postgres/:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
+    networks:
+      - db-local
+  
+  loyalty:
+    build:
+      context: ./src/lab2/Loyalty Service/
+      dockerfile: Dockerfile
+    restart: always
+    container_name: loyalty
+    depends_on:
+      - postgres
+    ports:
+      - "8050:8050"
+    links:
+      - postgres
+    environment:
+      DATABASE_HOST: postgres
+    networks:
+      - db-local
+      - loyalty-local
+      
+  payment:
+    build:
+      context: ./src/lab2/Payment Service/
+      dockerfile: Dockerfile
+    restart: always
+    container_name: payment
+    depends_on:
+      - postgres
+    ports:
+      - "8060:8060"
+    links:
+      - postgres
+    environment:
+      DATABASE_HOST: postgres
+    networks:
+      - db-local
+      - payment-local
 
-# TODO добавить сервисы
+  reservation:
+    build:
+      context: ./src/lab2/Reservation Service/
+      dockerfile: Dockerfile
+    restart: always
+    container_name: reservation
+    depends_on:
+      - postgres
+    ports:
+      - "8070:8070"
+    links:
+      - postgres
+    environment:
+      DATABASE_HOST: postgres
+    networks:
+      - db-local
+      - reservation-local
+
+  gateway:
+    build:
+      context: ./src/lab2/Gateway/
+      dockerfile: Dockerfile
+    restart: always
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - reservation
+      - payment
+      - loyalty
+    networks:
+      - loyalty-local
+      - payment-local
+      - reservation-local    
+  
+networks:
+  loyalty-local:
+  payment-local:
+  reservation-local:
+  db-local:
+    driver: bridge
 
 volumes:
   db-data:
