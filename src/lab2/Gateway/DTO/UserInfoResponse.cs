@@ -6,7 +6,7 @@ namespace Gateway.DTO
     public class UserInfoResponse
     {
         public List<UserReservationInfo> Reservations { get; set; } = null!;
-        public LoyaltyInfo Loyalty { get; set; } = null!;
+        public object Loyalty { get; set; } = null!;
     }
 
     public class UserReservationInfo
@@ -16,19 +16,19 @@ namespace Gateway.DTO
         public string Status { get; set; } = null!;
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
-        public PaymentInfo Payment { get; set; }
+        public object Payment { get; set; }
     }
 
     public class LoyaltyInfo
     {
         public string Status { get; set; } = null!;
-        public int Discount { get; set; }
+        public int? Discount { get; set; }
     }
 
     public class PaymentInfo
     {
         public string Status { get; set; } = null!;
-        public int Price { get; set; }
+        public int? Price { get; set; }
     }
 
     public class HotelInfo

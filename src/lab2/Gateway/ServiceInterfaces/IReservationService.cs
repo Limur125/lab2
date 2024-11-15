@@ -1,13 +1,15 @@
-﻿using Gateway.DTO;
-using Gateway.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
+using Gateway.DTO;
+using Gateway.Models;
 
 namespace Gateway.ServiceInterfaces
 {
     public interface IReservationService
     {
+        public Task<bool> HealthCheckAsync();
+
         public Task<PaginationResponse<IEnumerable<Hotels>>?> GetHotelsAsync(int? page,
         int? size);
 

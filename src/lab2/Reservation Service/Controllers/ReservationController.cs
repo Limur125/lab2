@@ -10,7 +10,7 @@ namespace Reservation_Service
 {
     [Route("/")]
     [ApiController]
-    public class ReservationController(ILogger<ReservationController> logger, ReservationDBContext reservationsContext) : ControllerBase
+    public class ReservationController(ILogger<ReservationController> logger, ReservationDBContext _reservationsContext) : ControllerBase
     {
         [HttpGet("manage/health")]
         public async Task<ActionResult> HealthCheck()
@@ -27,7 +27,7 @@ namespace Reservation_Service
                 return BadRequest();
             }
 
-            var query = reservationsContext.Reservations.AsNoTracking().AsQueryable();
+            var query = _reservationsContext.Reservations.AsNoTracking().AsQueryable();
             query = query.Where(r => r.Username.Equals(xUserName));
             var response = await query.ToListAsync();
             return response;
@@ -36,7 +36,7 @@ namespace Reservation_Service
         [HttpGet("api/v1/reservations/{reservationUid:guid}")]
         public async Task<ActionResult<Reservation?>> GetByUid([FromRoute] Guid reservationUid)
         {
-            var reservation = await reservationsContext.Reservations.AsNoTracking()
+            var reservation = await _reservationsContext.Reservations.AsNoTracking()
                 .FirstOrDefaultAsync(r => r.ReservationUid.Equals(reservationUid));
 
             return reservation;
@@ -45,10 +45,10 @@ namespace Reservation_Service
         [HttpDelete("api/v1/reservations/{reservationUid}")]
         public async Task<ActionResult<Reservation?>> DeleteByUid([FromRoute] Guid reservationUid)
         {
-            var res = await reservationsContext.Reservations
+            var res = await _reservationsContext.Reservations
                 .FirstOrDefaultAsync(r => r.ReservationUid.Equals(reservationUid));
             res.Status = ReservationStatuses.CANCELED;
-            await reservationsContext.SaveChangesAsync();
+            await _reservationsContext.SaveChangesAsync();
             return res;
         }
 
@@ -73,8 +73,8 @@ namespace Reservation_Service
                 EndDate = request.EndDate,
                 Id = request.Id,
             };
-            await reservationsContext.Reservations.AddAsync(newReservation);
-            await reservationsContext.SaveChangesAsync();
+            await _reservationsContext.Reservations.AddAsync(newReservation);
+            await _reservationsContext.SaveChangesAsync();
             logger.LogInformation($"\nReservation:\n{newReservation.Status}\n{newReservation.ReservationUid}\n{newReservation.StartDate}\n{newReservation.EndDate}\n{newReservation.Id}\n");
             return newReservation;
         }
