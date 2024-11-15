@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -11,7 +11,7 @@ namespace Reservation_Service
         {
             if (!context.Hotels.Any())
             {
-                var lib = new Hotels()
+                Hotels lib = new()
                 {
                     Id = 1,
                     HotelUid = Guid.Parse("049161bb-badd-4fa8-9d90-87c9a82b0668"),

@@ -29,7 +29,7 @@ namespace Reservation_Service
             _logger.LogInformation("Request to hotels");
 
             var query = _hotelsContext.Hotels.AsNoTracking().AsQueryable();
-            
+
             var total = await query.CountAsync();
 
             if (page.HasValue && size.HasValue)
@@ -39,7 +39,7 @@ namespace Reservation_Service
 
             var hotels = await query.ToListAsync();
 
-            var response = new PaginationResponse<IEnumerable<Hotels>>()
+            PaginationResponse<IEnumerable<Hotels>> response = new()
             {
                 Page = page.Value,
                 PageSize = size.Value,

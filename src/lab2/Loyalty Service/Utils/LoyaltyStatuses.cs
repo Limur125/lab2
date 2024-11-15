@@ -1,6 +1,6 @@
 ﻿namespace Loyalty_Service
 {
-    public static class LoyaltyStatuses
+    public struct LoyaltyStatuses
     {
         public static readonly string BRONZE = "BRONZE";
         public static readonly string SILVER = "SILVER";

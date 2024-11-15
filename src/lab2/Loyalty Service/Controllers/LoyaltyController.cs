@@ -7,17 +7,8 @@ namespace Loyalty_Service.Controllers
 {
     [Route("/")]
     [ApiController]
-    public class LoyaltyController : ControllerBase
+    public class LoyaltyController(ILogger<LoyaltyController> logger, LoyaltyDBContext _loyaltyContext) : ControllerBase
     {
-        private readonly ILogger<LoyaltyController> _logger;
-        private readonly LoyaltyDBContext _loyaltyContext;
-
-        public LoyaltyController(ILogger<LoyaltyController> logger, LoyaltyDBContext loyaltyContext)
-        {
-            _logger = logger;
-            _loyaltyContext = loyaltyContext;
-        }
-
         [IgnoreAntiforgeryToken]
         [HttpGet("manage/health")]
         public async Task<ActionResult> HealthCheck()

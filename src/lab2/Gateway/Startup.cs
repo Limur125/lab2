@@ -21,7 +21,6 @@ namespace Gateway
             services.AddCors();
             services.AddScoped<IReservationService, ReservationService>();
             services.AddScoped<IPaymentService, PaymentService>();
-            services.AddScoped<RequestQueueService>();
             services.AddScoped<ILoyaltyService, LoyaltyService>();
             services.AddControllers();
 
